@@ -2,7 +2,7 @@ const scapeCategory = async (url, browser) => new Promise(async (resolve, reject
     try {
         let page = await browser.newPage()
         console.log('>> mở tab mới');
-        await page.goto(url, { timeout: 60000 })
+        await page.goto(url, { timeout: 120000 })
         console.log('>> truy cập vào', url);
         await page.waitForSelector('body > header > nav > div')
         console.log('>> Website đã load xong');
@@ -53,7 +53,7 @@ const scaperEachLink = async (browserIntance,url) => new Promise(async(resolve, 
             })
                                     
 
-        await browserIntance.close()
+        await newPage.close()
         resolve(dataProduct)
 
     } catch (error) {
@@ -82,11 +82,11 @@ const spacerProductDetail = async (browserIntance, url) => new Promise(async (re
         })
 
 
-        const decsProduct = await pageDetail.$eval('#root > main > div > div.l-pd-body > div > div.l-pd-body__wrapper > div.l-pd-body__left > div > div.card-body > div.st-pd-content > p:nth-child(1)', el => {
-            return el.querySelector('strong').innerText
-        })
+        // const decsProduct = await pageDetail.$eval('#root > main > div > div.l-pd-body > div > div.l-pd-body__wrapper > div.l-pd-body__left > div > div.card-body > div.st-pd-content > p:nth-child(1)', el => {
+        //     return el.querySelector('strong').innerText
+        // })
 
-        const categoryProduct = await pageDetail.$eval('#root > main > div > div.l-pd-header > div:nth-child(1) > div > ol > li.breadcrumb-item.active', el => {
+        const categoryProduct = await pageDetail.$eval('#root > main > div > div.l-pd-header > div:nth-child(1) > div > ol > li:nth-child(2)', el => {
             return el.querySelector('a').getAttribute('title')
         })
 
@@ -94,10 +94,10 @@ const spacerProductDetail = async (browserIntance, url) => new Promise(async (re
             productName: nameProduct,
             productCategory: categoryProduct,
             productPrice: priceProduct,
-            productDecs: decsProduct?decsProduct:"",
+            // productDecs: decsProduct?decsProduct:"",
 
         }
-        await browserIntance.close()
+        await pageDetail.close()
         resolve(detailData)
 
         

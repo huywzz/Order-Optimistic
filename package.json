@@ -9,6 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "puppeteer": "^22.6.2"
+    "exceljs": "^4.4.0",
+    "puppeteer": "^22.6.2",
+    "puppeteer-cluster": "^0.24.0"
   }
 }
