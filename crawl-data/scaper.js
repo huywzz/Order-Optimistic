@@ -30,7 +30,7 @@ const scapeCategory = async (url, browser) => new Promise(async (resolve, reject
         reject(error)
     }
 })
-const scaperEachLink = (browserIntance,url) => new Promise(async(resolve, reject) => {
+const scaperEachLink = async (browserIntance,url) => new Promise(async(resolve, reject) => {
     try {
         let newPage = await browserIntance.newPage()
         console.log('>>Mở tab mới ');
@@ -61,7 +61,53 @@ const scaperEachLink = (browserIntance,url) => new Promise(async(resolve, reject
         reject(error)
     }
 })
+const spacerProductDetail = async (browserIntance, url) => new Promise(async (resolve, reject) => {
+    try {
+        let pageDetail = await browserIntance.newPage()
+        console.log('>> Mở tab detail product');
+        await pageDetail.goto(url, { timeout: 120000 })
+        console.log('>> Truy cập vào detail product');
+        await pageDetail.waitForSelector('#root')
+        console.log('>> Load product detail ss');
+
+        let detailData = {}
+        
+        const nameProduct = await pageDetail.$eval('#root > main > div > div.l-pd-header > div:nth-child(2) > div.l-pd-top', el => {
+            return el.querySelector('h1').innerText
+        })
+
+        const priceProduct = await pageDetail.$eval('#root > main > div > div.l-pd-header > div:nth-child(2) > div.l-pd-row.clearfix > div.l-pd-right > div.st-price > div', el => {
+            const priceString= el.querySelector('div.st-price-main').innerText
+            return priceString.slice(0,-1)
+        })
+
+
+        const decsProduct = await pageDetail.$eval('#root > main > div > div.l-pd-body > div > div.l-pd-body__wrapper > div.l-pd-body__left > div > div.card-body > div.st-pd-content > p:nth-child(1)', el => {
+            return el.querySelector('strong').innerText
+        })
+
+        const categoryProduct = await pageDetail.$eval('#root > main > div > div.l-pd-header > div:nth-child(1) > div > ol > li.breadcrumb-item.active', el => {
+            return el.querySelector('a').getAttribute('title')
+        })
+
+        detailData = {
+            productName: nameProduct,
+            productCategory: categoryProduct,
+            productPrice: priceProduct,
+            productDecs: decsProduct?decsProduct:"",
+
+        }
+        await browserIntance.close()
+        resolve(detailData)
+
+        
+    } catch (error) {
+        console.log('loi o spacer product detail', error);
+        reject(error)
+    }
+})
 module.exports = {
     scapeCategory,
-    scaperEachLink
+    scaperEachLink,
+    spacerProductDetail
 }
