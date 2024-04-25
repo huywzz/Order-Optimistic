@@ -2,6 +2,8 @@ const puppeteer = require('puppeteer');
 const startBrowser = require('./browser')
 const scapeController = require('./scapeController')
 const scaper = require('./scaper')
+const { promisify } = require('util')
+
 
 let browser = startBrowser()
 
