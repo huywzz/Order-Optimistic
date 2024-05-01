@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const DOCUMENT_NAME = 'Product'
-const COLLECTION='Products'
+const COLLECTION_NAME='Products'
 
 const productSchema = new Schema({
     product_name: { type: String, required: true },
@@ -10,7 +10,7 @@ const productSchema = new Schema({
     product_quantity:{type:Number,require:true},
 },
     {
-        collection: COLLECTION,
+        collection: COLLECTION_NAME,
         timestamps: true,
     }
 )

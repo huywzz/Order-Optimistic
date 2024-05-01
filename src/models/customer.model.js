@@ -12,7 +12,5 @@ const customerSchema = new Schema({
     collection: COLLECTION_NAME,
 }
 )
-module.exports = {
-    customerModel:model(DOCUMENT_NAME,customerSchema)
-}
+module.exports = model(DOCUMENT_NAME,customerSchema)
 
