@@ -7,7 +7,7 @@ const otpSchema = new Schema({
     otp_email: { type: String },
     otp_token: { type: String },
     otp_status:{type:String, default:'pending',enum:['pending','active','block']},
-    expireAt: { type: Date, default: Date.now(), index: { expires: 20 } },
+    expireAt: { type: Date, default: Date.now(), index: { expires: 120 } },
 }, {
     collection:COLLECTION_NAME
 })

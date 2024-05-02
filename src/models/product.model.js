@@ -5,9 +5,9 @@ const COLLECTION_NAME='Products'
 
 const productSchema = new Schema({
     product_name: { type: String, required: true },
-    product_price: { type: Number, require: true },
-    product_cate: { type: String, require: true },
-    product_quantity:{type:Number,require:true},
+    product_price: { type: Number, required: true },
+    product_cate: { type: String, required: true },
+    product_quantity:{type:Number,required:true},
 },
     {
         collection: COLLECTION_NAME,
