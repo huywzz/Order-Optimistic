@@ -5,7 +5,8 @@ const DOCUMENT_NAME = 'Customer';
 
 const customerSchema = new Schema({
     phone_customer: { type: String, required: true },
-    email_customer: { type: String, required: true, unique:true },
+    email_customer: { type: String, required: true, unique: true },
+    password_customer: { type: String, required: true },
     name_customer: { type: String, required: true },
     status_customer: { type: String, default: 'pending', enum: ['pending', 'active', 'block'] }
 }, {

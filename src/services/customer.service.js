@@ -5,8 +5,9 @@ const { findOtpByToken } = require('./otp.service')
 const { foundCusByEmail } = require('../models/repositories/customer.repo')
 const OTP=require('../models/otp.model')
 class CustomerService{
-    static async newCus({ phone, email, name }) {
+    static async newCus({ phone, email, name,password }) {
         // 1. check email
+        const passwordHash = await bcrypt.hash(password, 10);
         const cus = await customerModel.findOne({
             email_customer:email
         }).lean()
@@ -17,6 +18,7 @@ class CustomerService{
             email_customer: email,
             phone_customer: phone,
             name_customer: name,
+            password_customer:passwordHash
         })
         // 2. send token
         const result = await sendEmailToken({
