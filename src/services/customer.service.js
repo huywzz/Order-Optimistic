@@ -62,7 +62,7 @@ class CustomerService{
         const { privateKey, publicKey } = keyService.generateKey()
         await keyService.findOneAndUpdateByCusId({ cusId: foundCustomer._id, privateKey: privateKey, publicKey: publicKey })
         const payload = {
-            custtomerId: foundCustomer._id,
+            customerId: foundCustomer._id,
             email:foundCustomer.email_customer
         }
         const tokens = generateToken({
@@ -71,12 +71,17 @@ class CustomerService{
             publicKey:publicKey
         })
         return {
-            customerId: foundCustomer._id,
+            customerId: foundCustomer._id, // gui len server mỗi khi muốn vào tài nguyên
             customerMail: foundCustomer.email_customer,
-            tokens,
+            tokens,//gui len server mỗi khi muốn vào tài nguyên
             
         }
         
+    }
+    static async findCustomerById(id) {
+        return await customerModel.findOne({
+            _id:id
+        }).lean()
     }
     
 }

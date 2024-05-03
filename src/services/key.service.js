@@ -21,7 +21,7 @@ class KeyService{
     async findKeyByCusId(cusId) {
         const foundKey = await keyModel.findOne({
             customerId:cusId
-        })
+        }).lean()
         return foundKey
     }
     async updateKey({ cusId, privateKey, publicKey }) {
