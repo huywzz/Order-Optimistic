@@ -4,7 +4,7 @@ const COLLECTION_NAME = 'Orders'
 const DOCUMENT_NAME = 'Order'
 
 const orderSchema = new Schema({
-    order_customer: { types: Schema.Types.ObjectId, ref: 'customer' },
+    order_customer: { types: Schema.Types.ObjectId, ref: 'Customer' },
     order_total: { types: Number, require: true },
     order_products: {
         type: Array,

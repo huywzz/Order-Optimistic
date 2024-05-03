@@ -1,9 +1,12 @@
 const customerModel=require('../models/customer.model')
-const { BadRequestError }=require('../core/error.responce')
+const { BadRequestError, AuthFailureError }=require('../core/error.responce')
 const { sendEmailToken } = require('./email.service')
 const { findOtpByToken } = require('./otp.service')
-const { foundCusByEmail } = require('../models/repositories/customer.repo')
-const OTP=require('../models/otp.model')
+const { foundCusByEmail,customerRepo } = require('../models/repositories/customer.repo')
+const OTP = require('../models/otp.model')
+const keyService=require('../services/key.service')
+const { generateToken } = require('../auth/util.auth')
+
 class CustomerService{
     static async newCus({ phone, email, name,password }) {
         // 1. check email
@@ -50,5 +53,31 @@ class CustomerService{
             updateCustomer // hoặc bạn có thể trả về thông tin cần thiết ở đây
         };
     }
+    static async login({ email, password }) {
+        const foundCustomer = await customerRepo.foundCusByEmailOrError(email)
+        const match = bcrypt.compare(password, foundCustomer.password_customer)
+        if (!match) {
+            throw new AuthFailureError('Authentication error')
+        }
+        const { privateKey, publicKey } = keyService.generateKey()
+        await keyService.findOneAndUpdateByCusId({ cusId: foundCustomer._id, privateKey: privateKey, publicKey: publicKey })
+        const payload = {
+            custtomerId: foundCustomer._id,
+            email:foundCustomer.email_customer
+        }
+        const tokens = generateToken({
+            payload: payload,
+            privateKey: privateKey,
+            publicKey:publicKey
+        })
+        return {
+            customerId: foundCustomer._id,
+            customerMail: foundCustomer.email_customer,
+            tokens,
+            
+        }
+        
+    }
+    
 }
 module.exports=CustomerService
