@@ -16,6 +16,13 @@ class CustomerController {
             metadata:await customerService.verifyCustomer(req.query.token)
         }).send(res)
     }
+    login = async (req, res, next) => {
+        console.log('::req param verify customer::', req.body);
+        return new SuccessResponse({
+            message: "Login ss",
+            metadata: await customerService.login(req.body)
+        }).send(res)
+    }
    
 }
 module.exports = new CustomerController()

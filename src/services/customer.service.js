@@ -6,11 +6,13 @@ const { foundCusByEmail,customerRepo } = require('../models/repositories/custome
 const OTP = require('../models/otp.model')
 const keyService=require('../services/key.service')
 const { generateToken } = require('../auth/util.auth')
+const bcrypt = require('bcrypt');
+
 
 class CustomerService{
     static async newCus({ phone, email, name,password }) {
         // 1. check email
-        const passwordHash = await bcrypt.hash(password, 10);
+        const passwordHash = await bcrypt.hash(password, 10,);
         const cus = await customerModel.findOne({
             email_customer:email
         }).lean()
