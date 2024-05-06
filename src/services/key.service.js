@@ -31,6 +31,7 @@ class KeyService{
         return await updateKey.save()
     }
     async findOneAndUpdateByCusId({ cusId, privateKey, publicKey }) {
+        
         const filter = { customerId: cusId }
         const update = {
             private_key: privateKey,

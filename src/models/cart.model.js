@@ -26,7 +26,6 @@ const cartSchema = new Schema({
     collection: COLLECTION_NAME,
 }
 )
-module.exports = {
-    customerModel: model(DOCUMENT_NAME, cartSchema)
-}
+module.exports = model(DOCUMENT_NAME, cartSchema)
+    
 
