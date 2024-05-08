@@ -6,4 +6,9 @@ const router = express.Router()
 
 router.use(authentication)
 router.post('/add-to-cart', asyncHandler(cartController.addToCart))
+router.post('/update-cart', asyncHandler(cartController.updateCart))
+router.post('/delete-item', asyncHandler(cartController.deleteProduct))
+router.post('/inc-item', asyncHandler(cartController.incQuantityItem))
+router.post('/dec-item', asyncHandler(cartController.decQuantityItem))
+
 module.exports = router

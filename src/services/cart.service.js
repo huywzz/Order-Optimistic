@@ -1,6 +1,6 @@
 const cartModel= require("../models/cart.model")
 
-
+const { BadRequestError, AuthFailureError } = require('../core/error.responce')
 // product = {
 //     productId,
 //     quantity,
@@ -28,7 +28,26 @@ class CartService {
 
         return await cartModel.findOneAndUpdate(query,update,options)
     }
+    static deleteItem = async ({ product, customerId }) => {
+        const customerCart = await cartModel.findOne({
+            cart_customer: customerId
+        })
+        if (!customerCart) {
+            throw new BadRequestError()
+        }
+        return await customerCart.updateOne({
+            $pull: {
+                cart_Products: {
+                    productId:product.productId
+                }
+            }
+        }).lean()
+    }
     static updateCartQuantity = async ({ customerId, product = {} }) => {
+
+        if (product.quantity === 0) {
+            return await this.deleteItem({ product, customerId })
+        }
         const {productId,quantity}=product
         const query = {
             cart_customer: customerId,
@@ -66,6 +85,48 @@ class CartService {
         return await customerCart.save()
         
     }
-    
+
+   
+    static incQuantityItem = async ({ product, customerId }) => {
+        const customerCart = await cartModel.findOne({
+            cart_customer: customerId
+        })
+        if (!customerCart) {
+            return await CartService.createCart({ customerId: customerId, product: product })
+        }
+        const existProduct = customerCart.cart_Products.find((e) => e.productId === product.productId)
+        if (!existProduct) {
+            throw new BadRequestError() 
+        }
+        customerCart.cart_Products.forEach(e => {
+            if (e.productId === product.productId) {
+                e.quantity = e.quantity+1
+            }
+        })
+        return await customerCart.save()
+    }
+    // giam quantity di 1 don vi
+    static decQuantityItem = async ({ product, customerId }) => {
+        const customerCart = await cartModel.findOne({
+            cart_customer: customerId
+        })
+        if (!customerCart) {
+            return await CartService.createCart({ customerId: customerId, product: product })
+        }
+        const existProduct = customerCart.cart_Products.find((e) => e.productId === product.productId)
+        if (!existProduct) {
+            throw new BadRequestError()
+        }
+        if (existProduct.quantity === 1) {
+           return await this.deleteItem({existProduct,customerId})
+        }
+        customerCart.cart_Products.forEach(e => {
+            if (e.productId === product.productId) {
+                e.quantity = e.quantity - 1
+            }
+        })
+        return await customerCart.save()
+    }
+
 }
 module.exports =  CartService
