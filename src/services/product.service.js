@@ -40,5 +40,21 @@ class ProductService{
         // })
         
     }
+    static getProductByServer = async (products) => {
+        return await Promise.all(
+            products.map(async (e) => {
+                const foundProduct = await product.findById(e.productId).lean()
+                if (foundProduct) {
+                    return {
+                        price: foundProduct.product_price,
+                        productId: foundProduct._id,
+                        quantity:e.quantity
+                    }
+                }
+                
+            })
+        )
+    }
+
 }
 module.exports=ProductService

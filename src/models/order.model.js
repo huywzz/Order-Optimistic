@@ -9,8 +9,8 @@ const orderSchema = new Schema({
     order_products: {
         type: Array,
         default: []
-    }
-    
+    },
+    order_address:{type:String, require:true},
 }, {
     timestamps: true,
     collection:COLLECTION_NAME

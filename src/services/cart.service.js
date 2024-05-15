@@ -127,6 +127,29 @@ class CartService {
         })
         return await customerCart.save()
     }
-
+    static findCartById = async (cartId) => {
+        return await cartModel.findById(cartId).lean()
+    }
+    // static async checkProductExistInCart(cart, listProduct) {
+    //     for (const item of listProduct) {
+            
+    //     }
+    // }
+    // static async findProductInCart(cart, product) {
+    //     const 
+    // }
+    static checkProductExistInCart = (cart, list) => {
+        let exist = 0;
+        list.forEach((e) => {
+            cart.forEach((c) => {
+                if (c.producId === e.producId) {
+                    exist = exist + 1;
+                }
+            })
+        })
+        // console.log(exist)
+        if (exist === list.length) return true
+        return false
+    }
 }
 module.exports =  CartService
