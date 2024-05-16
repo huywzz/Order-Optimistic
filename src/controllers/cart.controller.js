@@ -37,5 +37,11 @@ class CartController {
             message: "update cart ss",
         }).send(res)
     }
+    showCart = async (req, res, next) => {
+        return new SuccessResponse({
+            metadata: await cartService.findCartByIdCustomer(req.customerId),
+            message: "show cart ss",
+        }).send(res)
+    }
 }
 module.exports = new CartController()

@@ -46,9 +46,11 @@ class ProductService{
                 const foundProduct = await product.findById(e.productId).lean()
                 if (foundProduct) {
                     return {
-                        price: foundProduct.product_price,
+                        product_price: foundProduct.product_price,
                         productId: foundProduct._id,
-                        quantity:e.quantity
+                        product_category: foundProduct.product_cate,
+                        product_name:foundProduct.product_name,
+                        quantity_in_cart:e.quantity
                     }
                 }
                 

@@ -6,27 +6,29 @@ class CheckoutService{
     // listProduct = [
     //     {
     //         productId,
-    //         product price
+    //         quantity
     //     }
     // ]
     checkoutReview = async ({ cusId, cartId, listProduct }) => {
         const foundCart = await cartService.findCartById(cartId)
+        if (!foundCart) throw new BadRequestError()
+        
         let sum = {
             totalPrice: 0,
             totalCheck: 0,
         }
         const infoCus = await customerService.findCustomerById(cusId)
-        if (!foundCart) throw new BadRequestError()
-        
+       
         if (cartService.checkProductExistInCart(foundCart.cart_Products, listProduct)) {
             const products = await productService.getProductByServer(listProduct)
 
-            sum.totalPrice = products.reduce((sum, currentValue) => {
-                return sum + currentValue.price
-            })
+            const totalPrice = products.reduce((totalPrice, currentValue) => {
+                return totalPrice + currentValue.product_price*currentValue.quantity_in_cart
+            },0)
+            sum.totalPrice = totalPrice
             return {
                 inforCustomer: infoCus.name_customer,
-                listProduct,
+                product_review:products,
                 sum,
                 
             }

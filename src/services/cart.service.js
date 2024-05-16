@@ -1,6 +1,7 @@
 const cartModel= require("../models/cart.model")
 
-const { BadRequestError, AuthFailureError } = require('../core/error.responce')
+const { BadRequestError, AuthFailureError } = require('../core/error.responce');
+const { getInforData } = require("../utils");
 // product = {
 //     productId,
 //     quantity,
@@ -129,6 +130,16 @@ class CartService {
     }
     static findCartById = async (cartId) => {
         return await cartModel.findById(cartId).lean()
+    }
+    static findCartByIdCustomer = async (cusId) => {
+        
+        // return await cartModel.findOne({
+        //     cart_customer:cusId
+        // }).lean()
+        const foundCart = await cartModel.findOne({
+            cart_customer: cusId
+        })
+        return getInforData({ fields: ["_id", "cart_Products", "cart_count_product"],object:foundCart})
     }
     // static async checkProductExistInCart(cart, listProduct) {
     //     for (const item of listProduct) {

@@ -5,7 +5,11 @@ class CheckoutController {
     checkoutReview = async (req, res, next) => {
         console.log('::req body cart::', req.body);
         return new SuccessResponse({
-            metadata: await checkoutService.checkoutReview(req.body),
+            metadata: await checkoutService.checkoutReview({
+                cusId: req.customerId,
+                listProduct: req.body.listProduct,
+                cartId: req.body.cartId
+            }),
             message: "get checkout ss",
         }).send(res)
     }
