@@ -1,7 +1,7 @@
 const { product } = require("../models/product.model")
 const ExcelJS = require('exceljs');
 const xlsx = require('xlsx');
-
+const { convertStringToNumber } = require('../utils/index')
 class ProductService{
     static createProduct = async ({ name, price, quantity, category }) => {
         const newProduct = await product.create({
@@ -25,7 +25,7 @@ class ProductService{
             data.forEach((obj) => {
                 const data = {
                     product_name: obj['Ten san pham'],
-                    product_price: parseInt(obj['Gia san pham']),
+                    product_price:  convertStringToNumber(obj['Gia san pham']),
                     product_cate: obj['Loai san pham'],
                     product_quantity: parseInt(obj['So luong']),
                 }
