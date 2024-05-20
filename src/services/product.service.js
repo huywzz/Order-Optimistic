@@ -1,7 +1,8 @@
 const { product } = require("../models/product.model")
 const ExcelJS = require('exceljs');
 const xlsx = require('xlsx');
-const { convertStringToNumber } = require('../utils/index')
+const { convertStringToNumber } = require('../utils/index');
+// const productModel = require("../models/product.model");
 class ProductService{
     static createProduct = async ({ name, price, quantity, category }) => {
         const newProduct = await product.create({
@@ -56,6 +57,25 @@ class ProductService{
                 
             })
         )
+    }
+    static findProductById = async (productId) => {
+        return await product.findOne({
+            _id:productId
+        }).lean()
+    }
+    static updateProductQuantity = async (quantity,producId) => {
+        const query = {
+            _id: producId,
+        }
+        const update = {
+            $inc: {
+                product_quantity: -quantity
+            }
+        }
+        const options = {
+            upsert:true,
+        }
+        return await product.updateOne(query,update,options)
     }
 
 }

@@ -10,6 +10,7 @@ const orderSchema = new Schema({
         type: Array,
         default: []
     },
+    order_status: { type: String, enum: ['pending', 'confirm', 'shipped', 'cancelled'],default:'pending' },
     order_address:{type:String, require:true},
 }, {
     timestamps: true,

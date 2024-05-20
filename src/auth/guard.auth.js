@@ -31,7 +31,7 @@ const authentication = asyncHandler(async (req, res, next) => {
         return next()
     } catch (error) {
         console.log('decode false:', error);
-        throw new Error(error)
+        throw new ForbirdenError()
     }
 
 })

@@ -13,5 +13,17 @@ class CheckoutController {
             message: "get checkout ss",
         }).send(res)
     }
+    orderByUser = async (req, res, next) => {
+        console.log('::req body cart::', req.body);
+        return new SuccessResponse({
+            metadata: await checkoutService.orderByUser({
+                cusId: req.customerId,
+                listProduct: req.body.listProduct,
+                cartId: req.body.cartId,
+                address: req.body.address
+            }),
+            message: "get checkout ss",
+        }).send(res)
+    }
 }
 module.exports = new CheckoutController()
